@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public event System.Action OnGameWon; 
+    
     public static GameManager instance;
 
     private List<TargetTrigger> _activeTargetTriggers = new();
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
         if (gameWonTriggered) return;
         gameWonTriggered = true;
         Debug.Log("Game Won");
+        OnGameWon?.Invoke();
         Invoke(nameof(RestartLevel), 3f);
     }
 
