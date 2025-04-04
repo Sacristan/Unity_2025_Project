@@ -11,22 +11,23 @@ public class TargetTrigger : MonoBehaviour
     [SerializeField] float raiseDelay = 0.5f;
     [SerializeField] private TargetScript[] targets;
 
-    List<TargetScript> activeTargets = new List<TargetScript>();
+    private List<TargetScript> activeTargets;
 
     private void Start()
     {
         _collider = GetComponent<Collider>();
         activeTargets = new List<TargetScript>(targets);
 
-        foreach (var target in activeTargets)
+        for (int i = 0; i < activeTargets.Count; i++)
         {
-            target.Init(this);
+            targets[i].Init(this);
         }
     }
 
     public void OnTargetShot(TargetScript target)
     {
         activeTargets.Remove(target);
+        if (activeTargets.Count <= 0) GameManager.instance.OnTargetTriggerDone(this);
     }
 
     void OnTriggerEnter(Collider collider)

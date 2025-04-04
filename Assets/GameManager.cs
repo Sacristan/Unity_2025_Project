@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,37 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    void Start()
+    public static GameManager instance;
+
+    private List<TargetTrigger> _activeTargetTriggers = new();
+    
+    bool gameWonTriggered = false;
+    private void Awake()
     {
+        instance = this;
+    }
+
+    private void Start()
+    {
+        _activeTargetTriggers = new List<TargetTrigger>(FindObjectsOfType<TargetTrigger>());
+    }
+
+    public void OnTargetTriggerDone(TargetTrigger trigger)
+    {
+        Debug.Log(nameof(OnTargetTriggerDone));
         
+        _activeTargetTriggers.Remove(trigger);
+
+        if (_activeTargetTriggers.Count <= 0)
+        {
+            GameWon();
+        }
     }
 
     void GameWon()
     {
+        if (gameWonTriggered) return;
+        gameWonTriggered = true;
         Debug.Log("Game Won");
         Invoke(nameof(RestartLevel), 3f);
     }
