@@ -11,9 +11,22 @@ public class TargetTrigger : MonoBehaviour
     [SerializeField] float raiseDelay = 0.5f;
     [SerializeField] private TargetScript[] targets;
 
+    List<TargetScript> activeTargets = new List<TargetScript>();
+
     private void Start()
     {
         _collider = GetComponent<Collider>();
+        activeTargets = new List<TargetScript>(targets);
+
+        foreach (var target in activeTargets)
+        {
+            target.Init(this);
+        }
+    }
+
+    public void OnTargetShot(TargetScript target)
+    {
+        activeTargets.Remove(target);
     }
 
     void OnTriggerEnter(Collider collider)

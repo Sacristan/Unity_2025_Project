@@ -18,7 +18,7 @@ public class TargetScript : MonoBehaviour
 
     private Animation _animation;
     private AudioSource _audioSource;
-    
+    private TargetTrigger _targetTrigger;
     bool isDown = false;
 
     void Start()
@@ -33,18 +33,24 @@ public class TargetScript : MonoBehaviour
     {
         if (isHit && !isDown)
         {
+            _targetTrigger.OnTargetShot(this);
             ToppleTarget();
         }
+    }
+    
+    public void Init(TargetTrigger trigger)
+    {
+        _targetTrigger = trigger;
     }
 
     public void Raise(float maxRaiseDelay)
     {
         float raiseTime = maxRaiseDelay * Random.value;
-        
+
         Debug.Log("Raising Target " + gameObject.name);
         StartCoroutine(DelayTimer(raiseTime));
     }
-    
+
     private IEnumerator DelayTimer(float delay)
     {
         yield return new WaitForSeconds(delay);
