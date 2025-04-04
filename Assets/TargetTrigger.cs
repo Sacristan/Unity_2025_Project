@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TargetTrigger : MonoBehaviour
 {
+    public static event System.Action<TargetTrigger> OnAllTargetsShot;
+    
     bool hasRaisedTargets = false;
     private Collider _collider;
 
@@ -24,10 +26,10 @@ public class TargetTrigger : MonoBehaviour
         }
     }
 
-    public void OnTargetShot(TargetScript target)
+    public void HandleTargetShot(TargetScript target)
     {
         activeTargets.Remove(target);
-        if (activeTargets.Count <= 0) GameManager.instance.OnTargetTriggerDone(this);
+        if (activeTargets.Count <= 0) OnAllTargetsShot?.Invoke(this);
     }
 
     void OnTriggerEnter(Collider collider)

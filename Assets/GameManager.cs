@@ -19,9 +19,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _activeTargetTriggers = new List<TargetTrigger>(FindObjectsOfType<TargetTrigger>());
+        TargetTrigger.OnAllTargetsShot += OnTargetTriggerDone;
     }
 
-    public void OnTargetTriggerDone(TargetTrigger trigger)
+    private void OnDestroy()
+    {
+        TargetTrigger.OnAllTargetsShot -= OnTargetTriggerDone;
+    }
+
+    void OnTargetTriggerDone(TargetTrigger trigger)
     {
         Debug.Log(nameof(OnTargetTriggerDone));
         

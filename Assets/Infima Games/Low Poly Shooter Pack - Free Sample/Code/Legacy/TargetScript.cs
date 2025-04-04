@@ -33,7 +33,7 @@ public class TargetScript : MonoBehaviour
     {
         if (isHit && !isDown)
         {
-            _targetTrigger.OnTargetShot(this);
+            _targetTrigger.HandleTargetShot(this);
             ToppleTarget();
         }
     }
