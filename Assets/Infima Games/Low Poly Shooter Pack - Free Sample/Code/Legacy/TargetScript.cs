@@ -18,6 +18,8 @@ public class TargetScript : MonoBehaviour
 
     private Animation _animation;
     private AudioSource _audioSource;
+    
+    bool isDown = false;
 
     void Start()
     {
@@ -29,20 +31,10 @@ public class TargetScript : MonoBehaviour
 
     private void Update()
     {
-        //If the target is hit
-        if (isHit == true)
+        if (isHit && !isDown)
         {
             ToppleTarget();
         }
-    }
-
-    //Time before the target pops back up
-    private IEnumerator DelayTimer(float delay)
-    {
-        //Wait for random amount of time
-        yield return new WaitForSeconds(delay);
-        RaiseTarget();
-        routineStarted = false;
     }
 
     public void Raise(float maxRaiseDelay)
@@ -52,6 +44,15 @@ public class TargetScript : MonoBehaviour
         Debug.Log("Raising Target " + gameObject.name);
         StartCoroutine(DelayTimer(raiseTime));
     }
+    
+    private IEnumerator DelayTimer(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        RaiseTarget();
+        routineStarted = false;
+        isHit = false;
+        isDown = false;
+    }
 
     void RaiseTarget(bool doSound = true)
     {
@@ -60,7 +61,6 @@ public class TargetScript : MonoBehaviour
 
         if (doSound)
         {
-            //Set the upSound as current sound, and play it
             _audioSource.clip = upSound;
             audioSource.Play();
         }
@@ -68,8 +68,6 @@ public class TargetScript : MonoBehaviour
 
     void ToppleTarget(bool doSound = true)
     {
-        isHit = false;
-
         _animation.clip = targetDown;
         _animation.Play();
 
@@ -78,5 +76,7 @@ public class TargetScript : MonoBehaviour
             _audioSource.clip = downSound;
             audioSource.Play();
         }
+
+        isDown = true;
     }
 }
