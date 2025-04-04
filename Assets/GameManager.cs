@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     private List<TargetTrigger> _activeTargetTriggers = new();
     
     bool gameWonTriggered = false;
+    
+    AudioSource _audioSource;
+    
     private void Awake()
     {
         instance = this;
@@ -20,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         _activeTargetTriggers = new List<TargetTrigger>(FindObjectsOfType<TargetTrigger>());
         TargetTrigger.OnAllTargetsShot += OnTargetTriggerDone;
     }
@@ -47,6 +51,7 @@ public class GameManager : MonoBehaviour
         gameWonTriggered = true;
         Debug.Log("Game Won");
         OnGameWon?.Invoke();
+        _audioSource.Play();
         Invoke(nameof(RestartLevel), 3f);
     }
 
