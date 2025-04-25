@@ -112,16 +112,6 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //If bullet collides with "Target" tag
-        if (collision.transform.tag == "Target")
-        {
-            //Toggle "isHit" on target object
-            collision.transform.gameObject.GetComponent
-                <TargetScript>().isHit = true;
-            //Destroy bullet object
-            Destroy(gameObject);
-        }
-
         //If bullet collides with "ExplosiveBarrel" tag
         if (collision.transform.tag == "ExplosiveBarrel")
         {
@@ -145,6 +135,7 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.TryGetComponent<IShootable>(out IShootable shootable))
         {
             shootable.GotShot();
+            Destroy(gameObject);
         }
     }
 

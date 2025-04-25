@@ -27,8 +27,8 @@ public abstract class Animal : MonoBehaviour, IShootable
             isDead = true;
             _animator.SetTrigger("Die");
             
-            Destroy(GetComponent<Rigidbody>());
             Destroy(GetComponent<Collider>());
+            Destroy(GetComponent<Rigidbody>());
         }
     }
 }

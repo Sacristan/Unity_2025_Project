@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TargetScript : MonoBehaviour
+public class TargetScript : MonoBehaviour, IShootable
 {
     bool routineStarted = false;
 
@@ -84,5 +84,10 @@ public class TargetScript : MonoBehaviour
         }
 
         isDown = true;
+    }
+
+    public void GotShot()
+    {
+        isHit = true;
     }
 }
