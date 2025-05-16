@@ -57,6 +57,11 @@ public class Zombie : Animal
         }
     }
 
+    public void OnHitDamage()
+    {
+        _player.OnReceiveDamage(10f, this);
+    }
+    
     void UpdatePlayerTarget()
     {
         _navMeshAgent.destination = _player.transform.position;
@@ -70,6 +75,7 @@ public class Zombie : Animal
     void UpdateState()
     {
         _animator.SetBool("IsWalking", CurrentState == ZombieState.Chasing);
+        _animator.SetBool("IsAttacking", CurrentState == ZombieState.Attacking);
     }
 
     void StopMovement()
