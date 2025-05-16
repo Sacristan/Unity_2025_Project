@@ -5,11 +5,10 @@ using UnityEngine;
 
 public abstract class Animal : MonoBehaviour, IShootable
 {
-    Animator _animator;
-
+    protected Animator _animator;
     private bool isDead = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         _animator = GetComponentInChildren<Animator>();
     }
@@ -20,7 +19,7 @@ public abstract class Animal : MonoBehaviour, IShootable
         Die();
     }
 
-    void Die()
+    protected virtual void Die()
     {
         if (!isDead)
         {
