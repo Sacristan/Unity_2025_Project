@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public event System.Action OnGameWon; 
+    public event System.Action OnGameWon;
+    public event System.Action OnGameLost;
     
     public static GameManager instance;
 
@@ -26,8 +27,10 @@ public class GameManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _activeTargetTriggers = new List<TargetTrigger>(FindObjectsOfType<TargetTrigger>());
         TargetTrigger.OnAllTargetsShot += OnTargetTriggerDone;
+        Player _player = FindObjectOfType<Player>();
+        _player.OnDeath += PlayerOnDeath;
     }
-
+    
     private void OnDestroy()
     {
         TargetTrigger.OnAllTargetsShot -= OnTargetTriggerDone;
@@ -52,6 +55,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Won");
         OnGameWon?.Invoke();
         _audioSource.Play();
+        Invoke(nameof(RestartLevel), 3f);
+    }
+    
+    private void PlayerOnDeath()
+    {
+        OnGameLost?.Invoke();
         Invoke(nameof(RestartLevel), 3f);
     }
 

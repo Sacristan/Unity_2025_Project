@@ -6,9 +6,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public event Action<float> OnHealthChanged;
+    public event Action OnDeath;
     
     float health = 100f;
     public float Health => health;
+    
+    bool isDead = false;
 
     public void OnReceiveDamage(float damage, Animal from)
     {
@@ -24,6 +27,8 @@ public class Player : MonoBehaviour
 
     void Die()
     {
-        throw new System.NotImplementedException();
+        if (isDead) return;
+        isDead = true;
+        OnDeath?.Invoke();
     }
 }
