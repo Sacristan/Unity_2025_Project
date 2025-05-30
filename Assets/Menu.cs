@@ -5,8 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+    bool isLoading = false;
+    bool isQuitting = false;
+
     public void Play()
     {
+        if(isLoading) return;
+        isLoading = true;
+
         Debug.Log(nameof(Play));
 
         SceneManager.LoadScene(1);
@@ -15,6 +21,9 @@ public class Menu : MonoBehaviour
 
     public void Quit()
     {
+        if(isQuitting) return;
+        isQuitting = true;
+
         Debug.Log(nameof(Quit));
 
 #if UNITY_EDITOR
