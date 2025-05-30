@@ -59,7 +59,7 @@ public class Zombie : Animal
 
     public void OnHitDamage()
     {
-        _player.OnReceiveDamage(50f, this);
+        _player.OnReceiveDamage(10f, this);
     }
     
     void UpdatePlayerTarget()

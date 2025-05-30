@@ -2091,6 +2091,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthLabel: {fileID: 1265496231}
   deathUIContainer: {fileID: 1845198248}
+  damageIndicator: {fileID: 409307026}
+  damageIndicationDuration: 1
 --- !u!1 &1845198247
 GameObject:
   m_ObjectHideFlags: 0
