@@ -21,20 +21,20 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         _player = FindObjectOfType<Player>();
-        _player.OnHealthChanged += OnPlayerHealthChanged;
+        _player.OnHealthChanged += (health) => OnPlayerHealthChanged(health, showDamageIndicator: true);
         GameManager.instance.OnGameLost += InstanceOnOnGameLost;
 
         damageIndicatorColor = damageIndicator.color;
         damageTargetIndicatorColor = damageIndicator.color;
         damageTargetIndicatorColor.a = 0f;
-        
-        OnPlayerHealthChanged(_player.Health);
+
+        OnPlayerHealthChanged(_player.Health, showDamageIndicator: false);
     }
 
-    private void OnPlayerHealthChanged(float health)
+    private void OnPlayerHealthChanged(float health, bool showDamageIndicator = true)
     {
         healthLabel.text = $"Health: {health}";
-        ShowDamageIndicator();
+        if (showDamageIndicator) ShowDamageIndicator();
     }
 
     private void InstanceOnOnGameLost()
@@ -51,17 +51,17 @@ public class UIManager : MonoBehaviour
         IEnumerator DamageIndicatorRoutine()
         {
             float t = 0f;
-            
+
             damageIndicator.color = damageIndicatorColor;
             damageIndicator.enabled = true;
-            
+
             while (t <= 1f)
             {
                 t += Time.deltaTime / damageIndicationDuration;
                 damageIndicator.color = Color.Lerp(damageIndicatorColor, damageTargetIndicatorColor, t);
                 yield return null;
             }
-            
+
             damageIndicator.enabled = false;
         }
     }
