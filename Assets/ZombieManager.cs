@@ -28,7 +28,7 @@ public class ZombieManager : MonoBehaviour
     public void AddZombie(Zombie zombie)
     {
         zombies.Add(zombie);
-        Debug.Log(ZombieCount);
+        // Debug.Log(ZombieCount);
     }
 
     private void AnimalOnDeath(Animal animal)
@@ -36,7 +36,7 @@ public class ZombieManager : MonoBehaviour
         if (animal is Zombie)
         {
             zombies.Remove(animal as Zombie);
-            Debug.Log(ZombieCount);
+            // Debug.Log(ZombieCount);
         }
     }
     

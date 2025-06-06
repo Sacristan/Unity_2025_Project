@@ -10,23 +10,28 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private uint zombieCount = 5;
     [SerializeField] private float spawnOffset = 1f;
 
-    private void Start()
-    {
-        StartCoroutine(SpawnZombies());
-    }
+    // private void Start()
+    // {
+    //     SpawnZombies();
+    // }
 
-    IEnumerator SpawnZombies()
+    public void SpawnZombies()
     {
-        for (int i = 0; i < zombieCount; i++)
+        StartCoroutine(Routine());
+
+        IEnumerator Routine()
         {
-            Vector3 offset = new Vector3(
-                Random.Range(-spawnOffset, spawnOffset),
-                0,
-                Random.Range(-spawnOffset, spawnOffset));
+            for (int i = 0; i < zombieCount; i++)
+            {
+                Vector3 offset = new Vector3(
+                    Random.Range(-spawnOffset, spawnOffset),
+                    0,
+                    Random.Range(-spawnOffset, spawnOffset));
 
-            yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(0.25f);
             
-            SpawnObjectAt(transform.position + offset, transform.rotation);
+                SpawnObjectAt(transform.position + offset, transform.rotation);
+            } 
         }
     }
 

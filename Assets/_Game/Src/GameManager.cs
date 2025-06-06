@@ -44,8 +44,14 @@ public class GameManager : MonoBehaviour
 
         if (_activeTargetTriggers.Count <= 0)
         {
-            GameWon();
+            OnAllTargetsShot();
         }
+    }
+
+    void OnAllTargetsShot()
+    {
+        ZombieSpawner zombieSpawner = FindObjectOfType<ZombieSpawner>();
+        zombieSpawner.SpawnZombies();
     }
 
     void GameWon()
