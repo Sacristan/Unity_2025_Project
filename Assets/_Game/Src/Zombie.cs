@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class Zombie : Animal
 {
+    
     enum ZombieState
     {
         None,
@@ -38,6 +39,8 @@ public class Zombie : Animal
         base.Start();
         _player = FindObjectOfType<Player>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        
+        ZombieManager.instance.AddZombie(this);
     }
 
     private void Update()

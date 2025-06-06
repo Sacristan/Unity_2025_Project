@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class Animal : MonoBehaviour, IShootable
 {
+    public static event Action<Animal> OnDeath;
+    
     protected Animator _animator;
     private bool isDead = false;
 
@@ -28,6 +30,8 @@ public abstract class Animal : MonoBehaviour, IShootable
             
             Destroy(GetComponent<Collider>());
             Destroy(GetComponent<Rigidbody>());
+
+            OnDeath?.Invoke(this);
         }
     }
 }
