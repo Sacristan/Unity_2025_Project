@@ -8,15 +8,16 @@ public class GameManager : MonoBehaviour
 {
     public event System.Action OnGameWon;
     public event System.Action OnGameLost;
-    
+
     public static GameManager instance;
 
     private List<TargetTrigger> _activeTargetTriggers = new();
-    
+
     bool gameWonTriggered = false;
-    
+
     AudioSource _audioSource;
-    
+    ZombieSpawner _zombieSpawner;
+
     private void Awake()
     {
         instance = this;
@@ -28,9 +29,10 @@ public class GameManager : MonoBehaviour
         _activeTargetTriggers = new List<TargetTrigger>(FindObjectsOfType<TargetTrigger>());
         TargetTrigger.OnAllTargetsShot += OnTargetTriggerDone;
         Player _player = FindObjectOfType<Player>();
+        _zombieSpawner = FindObjectOfType<ZombieSpawner>();
         _player.OnDeath += PlayerOnDeath;
     }
-    
+
     private void OnDestroy()
     {
         TargetTrigger.OnAllTargetsShot -= OnTargetTriggerDone;
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour
     void OnTargetTriggerDone(TargetTrigger trigger)
     {
         Debug.Log(nameof(OnTargetTriggerDone));
-        
+
         _activeTargetTriggers.Remove(trigger);
 
         if (_activeTargetTriggers.Count <= 0)
@@ -50,8 +52,21 @@ public class GameManager : MonoBehaviour
 
     void OnAllTargetsShot()
     {
-        ZombieSpawner zombieSpawner = FindObjectOfType<ZombieSpawner>();
-        zombieSpawner.SpawnZombies();
+        _zombieSpawner.SpawnZombies();
+        StartCoroutine(WaitUntilNoZombies());
+
+        IEnumerator WaitUntilNoZombies()
+        {
+            do
+            {
+                yield return new WaitForSeconds(1f);
+            } while (ZombieManager.instance.ZombieCount > 0);
+
+            // yield return new WaitUntil(() => ZombieManager.instance.ZombieCount <= 0);
+            
+            GameWon();
+        }
+        
     }
 
     void GameWon()
@@ -63,7 +78,7 @@ public class GameManager : MonoBehaviour
         _audioSource.Play();
         Invoke(nameof(RestartLevel), 3f);
     }
-    
+
     private void PlayerOnDeath()
     {
         OnGameLost?.Invoke();
